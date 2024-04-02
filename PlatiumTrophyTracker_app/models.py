@@ -4,13 +4,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class UserAccount(models.Model):
-    title = models.CharField(max_length=200)
-    isActive = models.BooleanField(default=False)
+    user_name = models.CharField(max_length=200)
+    is_active = models.BooleanField(default=False)
     about = models.TextField(blank=True)
     user = models.OneToOneField('User', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return self.user_name
 
     def get_absolute_url(self):
         return reverse('UserAccount-detail', args=[str(self.id)])
@@ -29,13 +29,13 @@ class User(models.Model):
         
         
 class TrophyTracker(models.Model):
-    gameTitle = models.CharField(max_length=200)
-    gameDifficulty = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    game_title = models.CharField(max_length=200)
+    game_difficulty = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
     description = models.TextField()
     userAccount = models.ForeignKey('UserAccount', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.gameTitle
+        return self.game_title
 
     def get_absolute_url(self):
-        return reverse('TrophyTracker-detail', args=[str(self.id)])
+        return reverse('trophyTracker-detail', args=[str(self.id)])

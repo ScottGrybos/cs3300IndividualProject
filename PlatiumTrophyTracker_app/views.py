@@ -3,12 +3,19 @@ from django.http import HttpResponse
 from django.db.models import Count
 from .forms import TrophyTrackerForm  # Importing TrophyTrackerForm from the correct location
 from .models import UserAccount, TrophyTracker
+from django.shortcuts import render, get_object_or_404
+from .models import UserAccount
 
 def index(request):
-    # Call the home view function to get the data
-    users = UserAccount.objects.filter(isActive=True).annotate(num_trophytrackers=Count('trophytracker')).order_by('?')[:10]
+    # Get 10 random active users along with the count of TrophyTrackers they have
+    users = UserAccount.objects.filter(is_active=True).annotate(num_trophytrackers=Count('trophytracker')).order_by('?')[:10]
     # Render the index.html template with the data
     return render(request, 'PlatiumTrophyTracker_app/index.html', {'users': users})
+
+def user_account_detail(request, pk):
+    user_account = get_object_or_404(UserAccount, pk=pk)
+    trophy_trackers = user_account.trophytracker_set.all()
+    return render(request, 'PlatiumTrophyTracker_app/user_account_detail.html', {'user_account': user_account, 'trophy_trackers': trophy_trackers})
 
 def create_trophytracker(request):
     if request.method == 'POST':
