@@ -26,6 +26,10 @@
                     <a href="{% url 'update_trophytracker' trophy_tracker.pk %}">
                         <button style="padding: 5px 10px; background-color: #BF9B30; color: #000000; border: none; border-radius: 10px; cursor: pointer;">Update</button>
                     </a>
+                    <!-- Add delete button -->
+                    <a href="{% url 'delete_confirmation' trophy_tracker.pk %}">
+                        <button style="padding: 5px 10px; background-color: #FF5733; color: #FFFFFF; border: none; border-radius: 10px; cursor: pointer;">Delete</button>
+                    </a>
                 </li>
             {% endfor %}
         </ul>
@@ -34,8 +38,8 @@
     {% endif %}
 
     <!-- Button to create a new Trophy Tracker -->
-    <a href="{% url 'create_trophytracker' %}">
-        <button style="padding: 5px 10px; background-color: #BF9B30; color: #000000; border: none; border-radius: 10px; cursor: pointer;">Create Trophy Tracker</button>
+<a href="{% url 'create-trophytracker' %}">
+    <button style="padding: 5px 10px; background-color: #BF9B30; color: #000000; border: none; border-radius: 10px; cursor: pointer;">Create Trophy Tracker</button>
     </a>
 </body>
 </html>
