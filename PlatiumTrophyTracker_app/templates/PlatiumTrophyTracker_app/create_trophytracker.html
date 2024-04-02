@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create TrophyTracker</title>
+</head>
+<body>
+    <h1>Create TrophyTracker</h1>
+    <form method="POST" action="{% url 'create_trophytracker' %}">
+        {% csrf_token %}
+        <label for="game_title">Game Title:</label><br>
+        <input type="text" id="game_title" name="game_title" required><br><br>
+
+        <label for="game_difficulty">Game Difficulty (1-10):</label><br>
+        <input type="number" id="game_difficulty" name="game_difficulty" min="1" max="10" required><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" required></textarea><br><br>
+
+        <label for="user_account">User Account:</label><br>
+        <select id="user_account" name="user_account" required>
+            {% for user_account in user_accounts %}
+                <option value="{{ user_account.id }}">{{ user_account.title }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>
