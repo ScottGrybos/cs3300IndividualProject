@@ -1,0 +1,18 @@
+{% extends "PlatiumTrophyTracker_app/base_template.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Trophy Tracker</title>
+</head>
+<body>
+    <h1>Update Trophy Tracker</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Trophy Tracker</button>
+    </form>
+</body>
+</html>
+{% endblock %}

@@ -22,6 +22,10 @@
                     <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}">
                         <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">View Trophy Tracker</button>
                     </a>
+                    <!-- Add update button -->
+                    <a href="{% url 'update_trophytracker' trophy_tracker.pk %}">
+                        <button style="padding: 5px 10px; background-color: #BF9B30; color: #000000; border: none; border-radius: 10px; cursor: pointer;">Update</button>
+                    </a>
                 </li>
             {% endfor %}
         </ul>

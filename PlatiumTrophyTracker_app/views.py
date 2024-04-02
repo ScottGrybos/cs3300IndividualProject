@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.db.models import Count
-from .forms import TrophyTrackerForm  # Importing TrophyTrackerForm from the correct location
+from .forms import TrophyTrackerForm  
 from .models import UserAccount, TrophyTracker
 from django.shortcuts import render, get_object_or_404
 from .models import UserAccount
@@ -26,9 +26,20 @@ def create_trophytracker(request):
     if request.method == 'POST':
         form = TrophyTrackerForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('trophytracker_list')  # Redirect to a page where you list all TrophyTrackers
+            trophy_tracker = form.save()
+            return redirect(request.META.get('HTTP_REFERER', '/'))  # Redirect to the previous page or to the homepage if the referrer is not available
     else:
         form = TrophyTrackerForm()
     user_accounts = UserAccount.objects.all()  # Pass all UserAccounts to the template for the dropdown
     return render(request, 'PlatiumTrophyTracker_app/create_trophytracker.html', {'form': form, 'user_accounts': user_accounts})
+
+def update_trophytracker(request, pk):
+    trophytracker = get_object_or_404(TrophyTracker, pk=pk)
+    if request.method == 'POST':
+        form = TrophyTrackerForm(request.POST, instance=trophytracker)
+        if form.is_valid():
+            form.save()
+            return redirect(request.META.get('HTTP_REFERER', '/'))  # Redirect to the previous page or to the homepage if the referrer is not available
+    else:
+        form = TrophyTrackerForm(instance=trophytracker)
+    return render(request, 'PlatiumTrophyTracker_app/update_trophytracker.html', {'form': form})
