@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+{% extends "PlatiumTrophyTracker_app/base_template.html" %}
+
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,15 +19,11 @@
 
         <label for="description">Description:</label><br>
         <textarea id="description" name="description" required></textarea><br><br>
-
-        <label for="user_account">User Account:</label><br>
-        <select id="user_account" name="user_account" required>
-            {% for user_account in user_accounts %}
-                <option value="{{ user_account.id }}">{{ user_account.title }}</option>
-            {% endfor %}
+        
         </select><br><br>
 
         <button type="submit">Create</button>
     </form>
 </body>
 </html>
+{% endblock %}

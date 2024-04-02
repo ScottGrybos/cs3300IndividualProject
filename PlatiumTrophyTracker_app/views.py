@@ -5,6 +5,7 @@ from .forms import TrophyTrackerForm  # Importing TrophyTrackerForm from the cor
 from .models import UserAccount, TrophyTracker
 from django.shortcuts import render, get_object_or_404
 from .models import UserAccount
+from .models import TrophyTracker
 
 def index(request):
     # Get 10 random active users along with the count of TrophyTrackers they have
@@ -16,6 +17,10 @@ def user_account_detail(request, pk):
     user_account = get_object_or_404(UserAccount, pk=pk)
     trophy_trackers = user_account.trophytracker_set.all()
     return render(request, 'PlatiumTrophyTracker_app/user_account_detail.html', {'user_account': user_account, 'trophy_trackers': trophy_trackers})
+
+def trophy_tracker_detail(request, pk):
+    trophy_tracker = get_object_or_404(TrophyTracker, pk=pk)
+    return render(request, 'PlatiumTrophyTracker_app/trophy_tracker_detail.html', {'trophy_tracker': trophy_tracker})
 
 def create_trophytracker(request):
     if request.method == 'POST':
