@@ -14,21 +14,21 @@
 
     <h2>Trophy Trackers</h2>
     {% if trophy_trackers %}
-        <ul>
+        <ul class= "list-group">
             {% for trophy_tracker in trophy_trackers %}
-                <li>
+                <li class= "list-group-item">
                     {{ trophy_tracker.game_title }}
                     <!-- View button -->
                     <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}">
-                        <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">View Trophy Tracker</button>
+                        <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">View</button>
                     </a>
                     <!-- Update button -->
                     <a href="{% url 'update_trophy_tracker' trophy_tracker.pk %}">
-                        <button style="padding: 5px 10px; background-color: #FFD700; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Update Trophy Tracker</button>
+                        <button style="padding: 5px 10px; background-color: #FFD700; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Update</button>
                     </a>
 
                     <a href="{% url 'delete_trophy_tracker' trophy_tracker.pk %}">
-                        <button style="padding: 5px 10px; background-color: #FF4D4D; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Update Trophy Tracker</button>
+                        <button style="padding: 5px 10px; background-color: #FF4D4D; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Delete</button>
 
                     <br><br>
                 </li>
@@ -38,6 +38,7 @@
         <p>No trophy trackers found.</p>
     {% endif %}
     
+    <br>
     <!-- Button to create a new trophy tracker -->
     <a href="{% url 'create_trophy_tracker' %}">
         <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Create Trophy Tracker</button>

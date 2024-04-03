@@ -10,7 +10,7 @@ from .forms import TrophyTrackerForm
 def index(request):
     # Get 10 random active users along with the count of TrophyTrackers they have
     users = UserAccount.objects.filter(is_active=True).annotate(num_trophytrackers=Count('trophytracker')).order_by('?')[:10]
-    # Render the index.html template with the data
+    
     return render(request, 'PlatiumTrophyTracker_app/index.html', {'users': users})
 
 def user_account_detail(request, pk):
@@ -51,3 +51,7 @@ def delete_trophy_tracker(request, pk):
         trophy_tracker.delete()
         return redirect('user_account_detail', pk=user_account_id)  # Redirect to user account detail
     return render(request, 'PlatiumTrophyTracker_app/delete_confirmation_trophy_tracker.html', {'user_account_id': user_account_id})
+
+def trophy_tracker_list(request):
+    trophy_trackers = TrophyTracker.objects.all()
+    return render(request, 'PlatiumTrophyTracker_app/list_trophy_tracker.html', {'trophy_trackers': trophy_trackers})

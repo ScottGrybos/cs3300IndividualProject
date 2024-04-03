@@ -8,6 +8,7 @@ urlpatterns = [
     path('trophytracker/new/', views.create_trophy_tracker, name='create_trophy_tracker'),
     path('trophytracker/<int:pk>/update/', views.update_trophy_tracker, name='update_trophy_tracker'),
     path('trophytracker/<int:pk>/delete/', views.delete_trophy_tracker, name='delete_trophy_tracker'),
+     path('trophytrackers/', views.trophy_tracker_list, name='trophy_tracker_list'),
 ]
 
 
