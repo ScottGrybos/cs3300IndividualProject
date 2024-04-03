@@ -22,17 +22,19 @@
                     <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}">
                         <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">View Trophy Tracker</button>
                     </a>
+                    <br><br>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>No trophy trackers found.</p>
     {% endif %}
-
-    <!-- Button to create a new Trophy Tracker -->
-    <a href="{% url 'create_trophytracker' %}">
-        <button style="padding: 5px 10px; background-color: #BF9B30; color: #000000; border: none; border-radius: 10px; cursor: pointer;">Create Trophy Tracker</button>
+    
+    <!-- Button to create a new trophy tracker -->
+    <a href="{% url 'create_trophy_tracker' %}">
+        <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Create Trophy Tracker</button>
     </a>
+
 </body>
 </html>
 {% endblock %}

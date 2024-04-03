@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.db.models import Count
-from .forms import TrophyTrackerForm  # Importing TrophyTrackerForm from the correct location
 from .models import UserAccount, TrophyTracker
 from django.shortcuts import render, get_object_or_404
 from .models import UserAccount
 from .models import TrophyTracker
+from .forms import TrophyTrackerForm
 
 def index(request):
     # Get 10 random active users along with the count of TrophyTrackers they have
@@ -22,13 +22,13 @@ def trophy_tracker_detail(request, pk):
     trophy_tracker = get_object_or_404(TrophyTracker, pk=pk)
     return render(request, 'PlatiumTrophyTracker_app/trophy_tracker_detail.html', {'trophy_tracker': trophy_tracker})
 
-def create_trophytracker(request):
+def create_trophy_tracker(request):
     if request.method == 'POST':
         form = TrophyTrackerForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('trophytracker_list')  # Redirect to a page where you list all TrophyTrackers
+            trophy_tracker = form.save()
+            # Redirect to the detail view of the associated UserAccount
+            return redirect('user_account_detail', pk=trophy_tracker.userAccount.pk)
     else:
         form = TrophyTrackerForm()
-    user_accounts = UserAccount.objects.all()  # Pass all UserAccounts to the template for the dropdown
-    return render(request, 'PlatiumTrophyTracker_app/create_trophytracker.html', {'form': form, 'user_accounts': user_accounts})
+    return render(request, 'PlatiumTrophyTracker_app/trophytracker_form.html', {'form': form})
