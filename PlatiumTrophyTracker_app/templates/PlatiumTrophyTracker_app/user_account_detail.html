@@ -18,10 +18,18 @@
             {% for trophy_tracker in trophy_trackers %}
                 <li>
                     {{ trophy_tracker.game_title }}
-                    <!-- Add more details of the trophy tracker as needed -->
+                    <!-- View button -->
                     <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}">
                         <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">View Trophy Tracker</button>
                     </a>
+                    <!-- Update button -->
+                    <a href="{% url 'update_trophy_tracker' trophy_tracker.pk %}">
+                        <button style="padding: 5px 10px; background-color: #FFD700; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Update Trophy Tracker</button>
+                    </a>
+
+                    <a href="{% url 'delete_trophy_tracker' trophy_tracker.pk %}">
+                        <button style="padding: 5px 10px; background-color: #FF4D4D; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Update Trophy Tracker</button>
+
                     <br><br>
                 </li>
             {% endfor %}

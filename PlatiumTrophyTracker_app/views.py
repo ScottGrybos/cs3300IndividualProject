@@ -32,3 +32,22 @@ def create_trophy_tracker(request):
     else:
         form = TrophyTrackerForm()
     return render(request, 'PlatiumTrophyTracker_app/trophytracker_form.html', {'form': form})
+ 
+def update_trophy_tracker(request, pk):
+    trophy_tracker = get_object_or_404(TrophyTracker, pk=pk)
+    if request.method == 'POST':
+        form = TrophyTrackerForm(request.POST, instance=trophy_tracker)
+        if form.is_valid():
+            form.save()
+            return redirect('user_account_detail', pk=pk)  # Redirect to detail view after update
+    else:
+        form = TrophyTrackerForm(instance=trophy_tracker)
+    return render(request, 'PlatiumTrophyTracker_app/update_trophy_tracker.html', {'form': form})
+ 
+def delete_trophy_tracker(request, pk):
+    trophy_tracker = get_object_or_404(TrophyTracker, pk=pk)
+    user_account_id = trophy_tracker.userAccount_id  # Store user account ID for redirect
+    if request.method == 'POST':
+        trophy_tracker.delete()
+        return redirect('user_account_detail', pk=user_account_id)  # Redirect to user account detail
+    return render(request, 'PlatiumTrophyTracker_app/delete_confirmation_trophy_tracker.html', {'user_account_id': user_account_id})

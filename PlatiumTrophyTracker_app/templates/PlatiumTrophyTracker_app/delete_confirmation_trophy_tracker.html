@@ -1,0 +1,21 @@
+{% extends "PlatiumTrophyTracker_app/base_template.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Trophy Tracker</title>
+</head>
+<body>
+    <h2>Delete Trophy Tracker</h2>
+    <p>Are you sure you want to delete this Trophy Tracker?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+        <a href="{% url 'user_account_detail' user_account_id %}">
+            <button type="button">Cancel</button>
+        </a>
+    </form>
+</body>
+</html>
+{% endblock %}
