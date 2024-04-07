@@ -1,13 +1,19 @@
-<!-- inherit from base.html-->
 {% extends "PlatiumTrophyTracker_app/base_template.html" %}
 
-
-<!-- Replace block content in base_template.html -->
 {% block content %}
-<h1>Platium Trophy Tracker</h1>
+<div class="container">
+    <h1>Platium Trophy Tracker</h1>
 
+    <h2>Random Active Users</h2>
 
-<h2>More to come from [and your name goes here]</h2>
-
-
+    {% for user in users %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3 class="card-title">{{ user.user_name }}</h3>
+            <p class="card-text">Number of TrophyTrackers: {{ user.num_trophytrackers }}</p>
+            <a href="{% url 'user_account_detail' user.pk %}" class="btn btn-primary">View User Account</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
