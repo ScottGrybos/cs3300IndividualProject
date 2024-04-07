@@ -39,7 +39,7 @@ def update_trophy_tracker(request, pk):
         form = TrophyTrackerForm(request.POST, instance=trophy_tracker)
         if form.is_valid():
             form.save()
-            return redirect('user_account_detail', pk=pk)  # Redirect to detail view after update
+            return redirect('user_account_detail', pk=trophy_tracker.userAccount.pk)  # Redirect to detail view of associated UserAccount
     else:
         form = TrophyTrackerForm(instance=trophy_tracker)
     return render(request, 'PlatiumTrophyTracker_app/update_trophy_tracker.html', {'form': form})
@@ -53,5 +53,6 @@ def delete_trophy_tracker(request, pk):
     return render(request, 'PlatiumTrophyTracker_app/delete_confirmation_trophy_tracker.html', {'user_account_id': user_account_id})
 
 def trophy_tracker_list(request):
-    trophy_trackers = TrophyTracker.objects.all()
+    trophy_trackers = TrophyTracker.objects.all().order_by('game_title')
     return render(request, 'PlatiumTrophyTracker_app/list_trophy_tracker.html', {'trophy_trackers': trophy_trackers})
+

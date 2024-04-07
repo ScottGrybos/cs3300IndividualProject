@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -33,6 +34,7 @@ class TrophyTracker(models.Model):
     game_difficulty = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
     description = models.TextField()
     userAccount = models.ForeignKey('UserAccount', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.game_title

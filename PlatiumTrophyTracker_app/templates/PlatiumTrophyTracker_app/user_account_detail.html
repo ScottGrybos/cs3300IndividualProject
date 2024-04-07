@@ -5,45 +5,42 @@
 <html>
 <head>
     <title>User Account Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>User Account Detail</h1>
-    <p><strong>User Name:</strong> {{ user_account.user_name }}</p>
-    <p><strong>Is Active:</strong> {% if user_account.is_active %}Yes{% else %}No{% endif %}</p>
-    <p><strong>About:</strong> {{ user_account.about }}</p>
+    <div class="container">
+        <h1>User Account Detail</h1>
+        <p><strong>User Name:</strong> {{ user_account.user_name }}</p>
+        <p><strong>Is Active:</strong> {% if user_account.is_active %}Yes{% else %}No{% endif %}</p>
+        <p><strong>About:</strong> {{ user_account.about }}</p>
 
-    <h2>Trophy Trackers</h2>
-    {% if trophy_trackers %}
-        <ul class= "list-group">
-            {% for trophy_tracker in trophy_trackers %}
-                <li class= "list-group-item">
-                    {{ trophy_tracker.game_title }}
-                    <!-- View button -->
-                    <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}">
-                        <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">View</button>
-                    </a>
-                    <!-- Update button -->
-                    <a href="{% url 'update_trophy_tracker' trophy_tracker.pk %}">
-                        <button style="padding: 5px 10px; background-color: #FFD700; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Update</button>
-                    </a>
+        <h2>Trophy Trackers</h2>
+        {% if trophy_trackers %}
+            <ul class="list-group">
+                {% for trophy_tracker in trophy_trackers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ trophy_tracker.game_title }}
+                        <div>
+                            <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}" class="btn btn-primary mr-2">
+                                View
+                            </a>
+                            <a href="{% url 'update_trophy_tracker' trophy_tracker.pk %}" class="btn btn-warning mr-2">
+                                Update
+                            </a>
+                            <a href="{% url 'delete_trophy_tracker' trophy_tracker.pk %}" class="btn btn-danger">
+                                Delete
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No trophy trackers found.</p>
+        {% endif %}
 
-                    <a href="{% url 'delete_trophy_tracker' trophy_tracker.pk %}">
-                        <button style="padding: 5px 10px; background-color: #FF4D4D; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Delete</button>
-
-                    <br><br>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No trophy trackers found.</p>
-    {% endif %}
-    
-    <br>
-    <!-- Button to create a new trophy tracker -->
-    <a href="{% url 'create_trophy_tracker' %}">
-        <button style="padding: 5px 10px; background-color: #30D5C8; color: #0000000; border: none; border-radius: 10px; cursor: pointer;">Create Trophy Tracker</button>
-    </a>
-
+        <br>
+        <a href="{% url 'create_trophy_tracker' %}" class="btn btn-success">Create Trophy Tracker</a>
+    </div>
 </body>
 </html>
 {% endblock %}
