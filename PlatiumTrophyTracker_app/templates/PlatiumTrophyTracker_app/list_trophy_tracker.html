@@ -1,0 +1,38 @@
+{% extends "PlatiumTrophyTracker_app/base_template.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Trophy Trackers</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>List of Trophy Trackers</h1>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Game Title</th> 
+                    <th>User Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trophy_tracker in trophy_trackers %}
+                <tr>
+                    <td>{{ trophy_tracker.game_title }}</td>
+                    <td>{{ trophy_tracker.userAccount.user_name }}</td>
+                    <td>
+                        <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}" class="btn btn-primary">
+                            View 
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}
