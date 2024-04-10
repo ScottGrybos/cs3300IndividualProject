@@ -1,0 +1,12 @@
+{% extends "PlatiumTrophyTracker_app/base_template.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Logout</h2>
+    <p>Are you sure you want to logout?</p>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</div>
+{% endblock %}

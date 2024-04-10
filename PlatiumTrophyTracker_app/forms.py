@@ -1,11 +1,16 @@
 from django import forms
 from .models import TrophyTracker
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class TrophyTrackerForm(forms.ModelForm):
     class Meta:
         model = TrophyTracker
-<<<<<<< HEAD
-        fields = ['game_title', 'game_difficulty', 'description']
-=======
         fields = ['game_title', 'game_difficulty', 'description', 'userAccount']
->>>>>>> dcd40ab
+        
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']

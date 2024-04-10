@@ -2,10 +2,13 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.db.models import Count
 from .models import UserAccount, TrophyTracker
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from .models import UserAccount
 from .models import TrophyTracker
 from .forms import TrophyTrackerForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 
 def index(request):
     # Get 10 random active users along with the count of TrophyTrackers they have
@@ -55,4 +58,32 @@ def delete_trophy_tracker(request, pk):
 def trophy_tracker_list(request):
     trophy_trackers = TrophyTracker.objects.all().order_by('game_title')
     return render(request, 'PlatiumTrophyTracker_app/list_trophy_tracker.html', {'trophy_trackers': trophy_trackers})
+ 
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')  # Redirect to desired page after login
+        else:
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'login.html')
+
+def user_logout(request):
+    logout(request)
+    return redirect('index') 
+ 
+def user_register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('login')  # Redirect to login page after successful registration
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
