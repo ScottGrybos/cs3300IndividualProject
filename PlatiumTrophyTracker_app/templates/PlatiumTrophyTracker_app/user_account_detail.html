@@ -24,12 +24,14 @@
                             <a href="{% url 'trophy_tracker_detail' trophy_tracker.pk %}" class="btn btn-primary mr-2">
                                 View
                             </a>
-                            <a href="{% url 'update_trophy_tracker' trophy_tracker.pk %}" class="btn btn-warning mr-2">
-                                Update
-                            </a>
-                            <a href="{% url 'delete_trophy_tracker' trophy_tracker.pk %}" class="btn btn-danger">
-                                Delete
-                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'update_trophy_tracker' trophy_tracker.pk %}" class="btn btn-warning mr-2">
+                                    Update
+                                </a>
+                                <a href="{% url 'delete_trophy_tracker' trophy_tracker.pk %}" class="btn btn-danger">
+                                    Delete
+                                </a>
+                            {% endif %}
                         </div>
                     </li>
                 {% endfor %}
@@ -39,7 +41,9 @@
         {% endif %}
 
         <br>
-        <a href="{% url 'create_trophy_tracker' %}" class="btn btn-success">Create Trophy Tracker</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'create_trophy_tracker' %}" class="btn btn-success">Create Trophy Tracker</a>
+        {% endif %}
     </div>
 </body>
 </html>

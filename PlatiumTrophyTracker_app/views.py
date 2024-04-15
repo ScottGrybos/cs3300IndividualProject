@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 
+
+
 def index(request):
     # Get 10 random active users along with the count of TrophyTrackers they have
     users = UserAccount.objects.filter(is_active=True).annotate(num_trophytrackers=Count('trophytracker')).order_by('?')[:10]
@@ -35,6 +37,7 @@ def create_trophy_tracker(request):
     else:
         form = TrophyTrackerForm()
     return render(request, 'PlatiumTrophyTracker_app/trophytracker_form.html', {'form': form})
+
  
 def update_trophy_tracker(request, pk):
     trophy_tracker = get_object_or_404(TrophyTracker, pk=pk)
@@ -69,7 +72,7 @@ def user_login(request):
             return redirect('index')  # Redirect to desired page after login
         else:
             messages.error(request, 'Invalid username or password.')
-    return render(request, 'login.html')
+    return render(request, 'registration/login.html')
 
 def user_logout(request):
     logout(request)
@@ -85,5 +88,5 @@ def user_register(request):
             return redirect('login')  # Redirect to login page after successful registration
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
