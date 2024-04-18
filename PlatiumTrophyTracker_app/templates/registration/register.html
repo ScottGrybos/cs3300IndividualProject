@@ -7,6 +7,16 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Register</button>
+        <!-- Display form validation errors -->
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for field, error_list in form.errors.items %}
+                    {% for error in error_list %}
+                        <strong>{{ field|title }}:</strong> {{ error }}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

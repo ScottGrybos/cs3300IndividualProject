@@ -1,0 +1,48 @@
+from django.test import TestCase, RequestFactory
+from django.urls import reverse
+from django.contrib.auth.models import User
+from PlatiumTrophyTracker_app.models import UserAccount, TrophyTracker
+from PlatiumTrophyTracker_app.views import user_account_detail, trophy_tracker_detail, create_trophy_tracker, update_trophy_tracker, delete_trophy_tracker
+
+class ViewTests(TestCase):
+    def setUp(self):
+        # Create a user and user account for testing
+        self.user = User.objects.create_user(username='testuser', email='test@example.com', password='testpassword')
+        self.user_account = UserAccount.objects.create(user_name='Test User', user=self.user)
+        # Create a trophy tracker for testing
+        self.trophy_tracker = TrophyTracker.objects.create(game_title='Test Game', description='Test Description', userAccount=self.user_account)
+
+    def test_user_account_detail_view(self):
+        url = reverse('user_account_detail', kwargs={'pk': self.user_account.pk})
+        request = RequestFactory().get(url)
+        response = user_account_detail(request, pk=self.user_account.pk)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'PlatiumTrophyTracker_app/user_account_detail.html')
+
+    def test_trophy_tracker_detail_view(self):
+        url = reverse('trophy_tracker_detail', kwargs={'pk': self.trophy_tracker.pk})
+        request = RequestFactory().get(url)
+        response = trophy_tracker_detail(request, pk=self.trophy_tracker.pk)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'PlatiumTrophyTracker_app/trophy_tracker_detail.html')
+
+    def test_create_trophy_tracker_view(self):
+        url = reverse('create_trophy_tracker')
+        request = RequestFactory().get(url)
+        response = create_trophy_tracker(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'PlatiumTrophyTracker_app/trophytracker_form.html')
+
+    def test_update_trophy_tracker_view(self):
+        url = reverse('update_trophy_tracker', kwargs={'pk': self.trophy_tracker.pk})
+        request = RequestFactory().get(url)
+        response = update_trophy_tracker(request, pk=self.trophy_tracker.pk)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'PlatiumTrophyTracker_app/update_trophy_tracker.html')
+
+    def test_delete_trophy_tracker_view(self):
+        url = reverse('delete_trophy_tracker', kwargs={'pk': self.trophy_tracker.pk})
+        request = RequestFactory().get(url)
+        response = delete_trophy_tracker(request, pk=self.trophy_tracker.pk)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'PlatiumTrophyTracker_app/delete_confirmation_trophy_tracker.html')
