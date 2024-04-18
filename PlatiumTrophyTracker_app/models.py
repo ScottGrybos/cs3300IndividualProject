@@ -1,3 +1,4 @@
+import json
 from django.utils import timezone
 from django.db import models
 from django.urls import reverse
@@ -35,7 +36,7 @@ class TrophyTracker(models.Model):
     game_difficulty = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
     description = models.TextField()
     trophy_list = models.TextField(default="")
-    userAccount = models.ForeignKey(UserAccount, on_delete=models.CASCADE)  # Changed to reference the UserAccount model
+    userAccount = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -44,63 +45,43 @@ class TrophyTracker(models.Model):
     def get_absolute_url(self):
         return reverse('trophyTracker-detail', args=[str(self.id)])
 
-    def update_trophy_list(self):
-        # URL of the website to scrape
-        url = 'https://www.playstationtrophies.org/games/ps5/?sort=name' 
-        
-        # Send a GET request to the URL
-        response = requests.get(url)
-
-        # Parse the HTML content of the page
-        soup = BeautifulSoup(response.content, 'html.parser')
-
-        # Find the trophy list section in the HTML
-        trophy_list_section = soup.find('div', class_='trophy-list')  # Replace with the appropriate HTML tag and class
-
-        # Extract the trophy list from the HTML
-        trophy_list = []
-        if trophy_list_section:
-            trophies = trophy_list_section.find_all('li')  # Replace with the appropriate HTML tag for each trophy
-            for trophy in trophies:
-                trophy_list.append(trophy.text.strip())
-
-        # Update the trophy_list field
-        self.trophy_list = '\n'.join(trophy_list)
-        self.save()
-        
     @staticmethod
-    def update_game_choices():
-
-        # URL of the website to scrape for game choices
-        url = 'https://www.playstationtrophies.org/games/ps5/?sort=name'
+    def fetch_game_names():
+        # URL of the website
+        url = "https://www.truetrophies.com/gamelist"
 
         # Send a GET request to the URL
         response = requests.get(url)
 
-        # Parse the HTML content of the page
-        soup = BeautifulSoup(response.content, 'html.parser')
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, "html.parser")
 
-        # Find all game titles on the webpage
-        game_choices = []
-        list_items = soup.find_all('li', class_='list_item')  # Adjust the class name accordingly
-        for item in list_items:
-            game_title_element = item.find('h4', class_='h-5')  # Adjust the tag and class for the game title
-            if game_title_element:
-                game_choices.append(game_title_element.text.strip())
+        # Find all the rows in the game list table
+        rows = soup.find_all("tr")
 
-        # Update the game_choices field
-        trophy_tracker, created = TrophyTracker.objects.get_or_create(id=1)
-        trophy_tracker.game_choices = '\n'.join(game_choices)
-        trophy_tracker.save()
+        # Initialize a list to store game names
+        game_names = []
 
-    @staticmethod
-    def search_games(query):
-        # Retrieve game choices
-        trophy_tracker = TrophyTracker.objects.first()
-        if trophy_tracker:
-            game_choices = trophy_tracker.game_choices.split('\n')
-            # Perform case-insensitive search
-            matching_games = [game for game in game_choices if query.lower() in game.lower()]
-            return matching_games
-        else:
-            return []
+        # Iterate over each row and extract the game details
+        for row in rows:
+            # Find the cell containing the game name and link
+            cell_game = row.find("td", class_="game")
+
+            # Check if cell_game exists (skipping the header row)
+            if cell_game:
+                # Extract the text of the game name
+                game_name = cell_game.a.get_text()
+                game_names.append(game_name)
+
+        return game_names
+
+    @classmethod
+    def update_game_choices(cls):
+        game_names = cls.fetch_game_names()
+        if game_names:
+            cls.objects.all().update(game_choices=",".join(game_names))
+
+
+
+
+        

@@ -9,25 +9,6 @@ class TrophyTrackerForm(forms.ModelForm):
     class Meta:
         model = TrophyTracker
         fields = ['game_title', 'game_difficulty', 'description', 'userAccount']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Populate the game_choices field with scraped game titles
-        trophy_tracker = TrophyTracker.objects.first()
-        if trophy_tracker:
-            game_choices = trophy_tracker.game_choices.split('\n')
-            choices = [(game, game) for game in game_choices]
-            self.fields['game_choices'].choices = [('', '---------')] + choices
-
-    def save(self, commit=True):
-        trophy_tracker = super().save(commit=False)
-        if commit:
-            trophy_tracker.save()
-
-        trophy_tracker.update_trophy_list()
-
-        return trophy_tracker
         
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField()

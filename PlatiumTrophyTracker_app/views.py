@@ -9,6 +9,8 @@ from .forms import TrophyTrackerForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import UserRegistrationForm
+import requests
+from bs4 import BeautifulSoup
 
 
 
@@ -96,5 +98,30 @@ def user_register(request):
         form = UserRegistrationForm()
 
     return render(request, 'registration/register.html', {'form': form})
+
+def game_list(request):
+    url = "https://www.truetrophies.com/gamelist"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    rows = soup.find_all("tr")
+
+    games = []
+    for row in rows:
+        cell_game = row.find("td", class_="game")
+        if cell_game:
+            game_link = cell_game.a["href"]
+            game_name = cell_game.a.get_text()
+            img_url = row.find("td", class_="gamethumb").img["src"]
+            completion_time = row.find_all("td")[6].get_text(strip=True) if len(row.find_all("td")) >= 7 else "N/A"
+            rating = row.find("td", class_="icon-rating").get_text(strip=True).split()[-1] if row.find("td", class_="icon-rating") else "N/A"
+            games.append({
+                "name": game_name,
+                "link": game_link,
+                "image_url": img_url,
+                "completion_time": completion_time,
+                "rating": rating
+            })
+
+    return render(request, 'PlatiumTrophyTracker_app/game_list.html', {'games': games})
 
 
