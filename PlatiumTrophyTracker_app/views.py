@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.db.models import Count
-from .models import UserAccount, TrophyTracker
+from .models import User, UserAccount, TrophyTracker
 from django.shortcuts import get_object_or_404
 from .models import UserAccount
 from .models import TrophyTracker
@@ -82,11 +82,10 @@ def user_register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
+            user = form.save()
+            username = form.cleaned_data.get('username')  # Get username from the form
             messages.success(request, f'Account created for {username}!')
-            return redirect('login')  # Redirect to login page after successful registration
+            return redirect('index')  # Redirect to the home page after successful registration
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
-

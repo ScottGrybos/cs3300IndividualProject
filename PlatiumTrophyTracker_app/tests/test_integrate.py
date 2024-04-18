@@ -12,16 +12,6 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.common.by import By
 import time
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.firefox import GeckoDriverManager
-from django.test import TestCase
-import time
-import sys
-
 from django.test import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -104,6 +94,7 @@ class RegistrationTest(TestCase):
 
         # Close the browser after completing the test
         browser.quit() 
+        
 
 if __name__ == "__main__":
     unittest.main() 
