@@ -30,6 +30,9 @@ def trophy_tracker_detail(request, pk):
     return render(request, 'PlatiumTrophyTracker_app/trophy_tracker_detail.html', {'trophy_tracker': trophy_tracker})
 
 def create_trophy_tracker(request):
+    # Update game choices before rendering the form
+    TrophyTracker.update_game_choices()
+    
     if request.method == 'POST':
         form = TrophyTrackerForm(request.POST)
         if form.is_valid():
