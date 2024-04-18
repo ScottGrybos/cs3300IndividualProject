@@ -8,7 +8,7 @@ from .models import TrophyTracker
 from .forms import TrophyTrackerForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
+from .forms import UserRegistrationForm
 
 
 
@@ -64,28 +64,37 @@ def trophy_tracker_list(request):
  
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('index')  # Redirect to desired page after login
+            # Redirect to the desired page after login (e.g., the index page)
+            return redirect('index')  # Assuming 'index' is the name of your index view or URL
         else:
-            messages.error(request, 'Invalid username or password.')
-    return render(request, 'registration/login.html')
+            # Handle invalid login
+            return render(request, 'login.html', {'error_message': 'Invalid username or password'})
+    else:
+        return render(request, 'registration/login.html')
 
-def user_logout(request):
-    logout(request)
-    return redirect('index') 
+def logout_confirm(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('index')  # Redirect to the desired page after logout
+    else:
+        return render(request, 'registration/logout.html')
+ 
  
 def user_register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')  # Get username from the form
-            messages.success(request, f'Account created for {username}!')
-            return redirect('index')  # Redirect to the home page after successful registration
+            form.save()
+            # Redirect to the index page after registration
+            return redirect('index')  # Assuming 'index' is the name of your index view or URL
     else:
-        form = UserCreationForm()
+        form = UserRegistrationForm()
+
     return render(request, 'registration/register.html', {'form': form})
+
+
