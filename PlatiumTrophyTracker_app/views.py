@@ -77,8 +77,10 @@ def user_login(request):
             # Redirect to the desired page after login (e.g., the index page)
             return redirect('index')  # Assuming 'index' is the name of your index view or URL
         else:
-            # Handle invalid login
-            return render(request, 'login.html', {'error_message': 'Invalid username or password'})
+          
+          error_message = 'Invalid username or password'
+          return render(request, 'registration/login.html', {'error_message': error_message})
+          
     else:
         return render(request, 'registration/login.html')
 
