@@ -30,7 +30,7 @@ class RegistrationTest(TestCase):
         browser.get('http://localhost:8000/register')
 
         # Wait for the form elements to be present
-        name_field = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.NAME, 'name')))
+        name_field = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.NAME, 'username')))
         email_field = browser.find_element(By.NAME, 'email')
         password1_field = browser.find_element(By.NAME, 'password1')
         password2_field = browser.find_element(By.NAME, 'password2')
@@ -66,7 +66,7 @@ class RegistrationTest(TestCase):
         browser.get('http://localhost:8000/register')
 
         # Wait for the form elements to be present
-        name_field = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.NAME, 'name')))
+        name_field = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.NAME, 'username')))
         email_field = browser.find_element(By.NAME, 'email')
         password1_field = browser.find_element(By.NAME, 'password1')
         password2_field = browser.find_element(By.NAME, 'password2')
@@ -95,6 +95,68 @@ class RegistrationTest(TestCase):
         # Close the browser after completing the test
         browser.quit() 
         
+class LoginTest(TestCase):
+    def test_login_with_correct_credentials(self):
+        # Initialize Firefox webdriver using GeckoDriverManager
+        browser = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+
+        # Open the login page
+        browser.get('http://localhost:8000/login')
+
+        # Wait for the form elements to be present
+        username_field = WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.NAME, 'username')))
+        password_field = browser.find_element(By.NAME, 'password')
+
+        # Correct login credentials
+        correct_username = "test_user"
+        correct_password = "TestPassword123"
+
+        # Fill in the form with correct information
+        username_field.send_keys(correct_username)
+        password_field.send_keys(correct_password)
+
+        # Submit the form
+        browser.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
+
+        # Wait for the login process to complete
+        time.sleep(2)
+
+        # Check if login was successful by checking the title of the next page
+        self.assertIn("Home", browser.title)
+
+        # Close the browser after completing the test
+        browser.quit()
+
+    def test_login_with_incorrect_credentials(self):
+        # Initialize Firefox webdriver using GeckoDriverManager
+        browser = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+
+        # Open the login page
+        browser.get('http://localhost:8000/login')
+
+        # Wait for the form elements to be present
+        username_field = WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.NAME, 'username')))
+        password_field = browser.find_element(By.NAME, 'password')
+
+        # Incorrect login credentials
+        incorrect_username = "incorrect_user"
+        incorrect_password = "incorrect_password"
+
+        # Fill in the form with incorrect information
+        username_field.send_keys(incorrect_username)
+        password_field.send_keys(incorrect_password)
+
+        # Submit the form
+        browser.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
+
+        # Wait for the login process to complete
+        time.sleep(2)
+
+        # Check if error message is displayed by checking the presence of alert-danger class
+        self.assertTrue(browser.find_elements_by_css_selector('.alert-danger'))
+
+        # Close the browser after completing the test
+        browser.quit()
 
 if __name__ == "__main__":
     unittest.main() 
